@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"9fans.net/go/plan9/client"
 )
 
 func main() {
@@ -18,11 +16,6 @@ func main() {
 	if len(os.Args) < 2 {
 		arg = "h"
 	} else {
-		_, err = client.MountService("acme")
-		if err != nil {
-			log.Fatal("unable to mount service. Not running inside acme?")
-		}
-
 		arg = os.Args[1]
 	}
 

@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"regexp"
 	"sort"
 	"strconv"
@@ -36,6 +37,11 @@ func clearBody(win *acme.Win) error {
 }
 
 func listFiles() error {
+	fsys, err := client.MountService("acme")
+	if err != nil {
+		log.Fatal("unable to mount service. Not running inside acme?")
+	}
+
 	fid, err := fsys.Open("index", plan9.OREAD)
 	if err != nil {
 		return err
