@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/s-urbaniak/apl/acme"
+	"github.com/s-urbaniak/acme"
 )
 
 func name() error {

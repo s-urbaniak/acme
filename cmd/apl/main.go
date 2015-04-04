@@ -1,6 +1,9 @@
+// apl is a command line tool
+// intended to be invoked from within the acme editor.
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -8,17 +11,21 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		log.Fatal("invalid number of arguments")
-	}
-
 	var err error
-	fsys, err = client.MountService("acme")
-	if err != nil {
-		log.Fatal(err)
+
+	var arg string
+
+	if len(os.Args) < 2 {
+		arg = "h"
+	} else {
+		_, err = client.MountService("acme")
+		if err != nil {
+			log.Fatal("unable to mount service. Not running inside acme?")
+		}
+
+		arg = os.Args[1]
 	}
 
-	arg := os.Args[1]
 	switch arg {
 
 	case "l":
@@ -45,7 +52,25 @@ func main() {
 		fallthrough
 	case "name":
 		err = name()
-	}
+
+	case "h":
+		fallthrough
+	case "help":
+		fmt.Println(`apl is a tool for interacting with the acme editor.
+
+Usage:
+
+	apl command
+
+The commands are:
+
+	l (list)	list all open files
+	d (dot)		show offset in bytes at current cursor position
+	m (marker)	collapse current text in a new window with vim-style '{{{','}}}' markers
+	la (line)	print line address at the cursor position
+	n (name)	print file name
+	h (help)	print help`)
+}
 
 	if err != nil {
 		log.Fatal(err)
