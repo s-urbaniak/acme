@@ -24,10 +24,10 @@ type Win struct {
 // EvtHandler is an interface defining
 // all possible event callback methods.
 type EvtHandler interface {
-	// Key press callback at the given rune offset
-	KeyPress(offset int)
+	// BodyInsert is invoked when text is being inserted to the body
+	BodyInsert(offset int)
 
-	// The Del callback is invoked when a window is closed
+	// Del is invoked when a window is closed
 	Del()
 
 	// Invoked when a communication error happens
@@ -164,7 +164,7 @@ func (win *Win) HandleEvt(h EvtHandler) {
 					h.Err(err)
 					return
 				}
-				h.KeyPress(q0)
+				h.BodyInsert(q0)
 			case 'x', 'X':
 				if string(evt.Text) == "Del" {
 					win.Win.Ctl("delete")
