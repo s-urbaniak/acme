@@ -1,3 +1,7 @@
+// Package marker provides a simple marker stack.
+// Given a line number and a text
+// one can push marker entries on the stack
+// and pop them later for display.
 package marker
 
 import (
@@ -5,7 +9,9 @@ import (
 	"strings"
 )
 
-type MarkerEntry struct {
+// Entry is a container
+// for a line number and a text
+type Entry struct {
 	line int
 	text string
 }
@@ -14,38 +20,49 @@ type markerList struct {
 	*list.List
 }
 
-type MarkerStack interface {
-	Push(entry MarkerEntry)
-	Pop() MarkerEntry
+// Stack is an interface for popping and pushing marker entries.
+type Stack interface {
+	Push(e Entry)
+	Pop() Entry
 	Len() int
 }
 
-func NewStack() MarkerStack {
+// NewStack creates a new empty stack of marker entries
+func NewStack() Stack {
 	return markerList{list.New()}
 }
 
-func (ml markerList) Push(entry MarkerEntry) {
+// Push pushes a new marker entry onto the stack
+func (ml markerList) Push(entry Entry) {
 	ml.PushBack(entry)
 }
 
-func (ml markerList) Pop() MarkerEntry {
-	e := ml.Back().Value.(MarkerEntry)
+// Pop pops an existing entry from the stack
+func (ml markerList) Pop() Entry {
+	e := ml.Back().Value.(Entry)
 	ml.Remove(ml.Back())
 	return e
 }
 
-func NewEntry(line int, text string) MarkerEntry {
-	return MarkerEntry{line, text}
+// NewEntry creates a new marker entry
+// for the given line number and text
+func NewEntry(line int, text string) Entry {
+	return Entry{line, text}
 }
 
-func (e MarkerEntry) Text() string {
+// Text returns the text of a marker entry
+func (e Entry) Text() string {
 	return e.text
 }
 
-func (e MarkerEntry) Line() int {
+// Line returns the line of a marker entry
+func (e Entry) Line() int {
 	return e.line
 }
 
-func (e MarkerEntry) Comment() string {
+// Comment returns the remaining text
+// after a `{{{` occurence
+// in the marker entry's text
+func (e Entry) Comment() string {
 	return e.Text()[strings.LastIndex(e.Text(), "{{{")+3:]
 }

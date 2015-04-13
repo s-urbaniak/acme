@@ -63,7 +63,7 @@ The commands are:
 	la (line)	print line address at the cursor position
 	n (name)	print file name
 	h (help)	print help`)
-}
+	}
 
 	if err != nil {
 		log.Fatal(err)
