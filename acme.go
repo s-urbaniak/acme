@@ -87,6 +87,18 @@ func New() (*Win, error) {
 	return ctl, err
 }
 
+type bodyWriter struct {
+	*Win
+}
+
+func (bw bodyWriter) Write(p []byte) (n int, err error) {
+	return bw.Win.Write("body", p)
+}
+
+func (win *Win) BodyWriter() io.Writer {
+	return bodyWriter{win}
+}
+
 // LineAddress returns the line address
 // at the current cursor position.
 func (win *Win) LineAddress() (int, error) {
