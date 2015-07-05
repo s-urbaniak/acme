@@ -87,16 +87,17 @@ func New() (*Win, error) {
 	return ctl, err
 }
 
-type bodyWriter struct {
+type fileWriter struct {
 	*Win
+	file string
 }
 
-func (bw bodyWriter) Write(p []byte) (n int, err error) {
-	return bw.Win.Write("body", p)
+func (fw fileWriter) Write(p []byte) (n int, err error) {
+	return fw.Win.Write(fw.file, p)
 }
 
-func (win *Win) BodyWriter() io.Writer {
-	return bodyWriter{win}
+func (win *Win) FileWriter(file string) io.Writer {
+	return fileWriter{win, file}
 }
 
 // LineAddress returns the line address
