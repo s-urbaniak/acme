@@ -100,7 +100,7 @@ func (frw fileReadWriter) Read(p []byte) (n int, err error) {
 	return frw.Win.Read(frw.file, p)
 }
 
-func (win *Win) FileReadWriter(file string) io.Writer {
+func (win *Win) FileReadWriter(file string) io.ReadWriter {
 	return fileReadWriter{win, file}
 }
 
